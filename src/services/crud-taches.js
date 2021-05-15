@@ -12,11 +12,33 @@ export async function creer(uid, tache) {
   // On ajoute la propriété 'date' à l'objet représentant la tâche en prenant la 
   // date du serveur Firestore.
   tache.date = firebase.firestore.FieldValue.serverTimestamp();
-  return instanceFirestore.collection(collUtil).doc(uid).collection(collTaches)
-    .add(tache).then(
+  return instanceFirestore.collection(collUtil).doc(uid).collection(collTaches).add(tache).then(
       tacheRef => tacheRef.get()
     );
 }
+
+export async function supprimer(uid, idDossier){
+  return instanceFirestore.collection(collUtil).doc(uid).collection(collTaches).doc(idDossier).delete();
+}
+
+
+
+export async function basculer(uid, idDossier, completee){
+  
+  if(completee === true){
+  return instanceFirestore.collection(collUtil).doc(uid).collection(collTaches).doc(idDossier).update({
+      completee : false
+  })
+}
+if(completee === false){
+  return instanceFirestore.collection(collUtil).doc(uid).collection(collTaches).doc(idDossier).update({
+      completee : true
+  })
+}
+
+}
+
+
 
 /**
  * Obtenir toutes les tâches d'un utilisateur
@@ -25,7 +47,7 @@ export async function creer(uid, tache) {
  */
 export async function lireTout(uid) {
   const taches = [];
-  return instanceFirestore.collection(collUtil).doc(uid).collection(collTaches)
+  return instanceFirestore.collection(collUtil).doc(uid).collection(collTaches).orderBy('date', 'desc')
                 .get().then(
                   reponse => reponse.forEach(
                     doc => {

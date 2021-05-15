@@ -15,6 +15,33 @@ export default function Taches({etatTaches, utilisateur}) {
      taches => setTaches(taches)
    )
  , [setTaches, uid]);
+
+
+//Fonction pour basculer une tache
+ function basculerTaches(idTache, completee){
+  crudTaches.basculer(utilisateur.uid, idTache, completee).then(
+    () =>{
+      setTaches(taches.map(tache => {
+        if(tache.id === idTache){
+          tache.completee = !tache.completee
+        }
+        return(tache)
+      }))
+    }
+    
+    
+  )
+    
+}
+
+
+//Fonction pour supprimer une tâche
+function supprimerTache(idTache){
+  crudTaches.supprimer(utilisateur.uid, idTache).then(
+    () => {
+      setTaches(taches.filter(d => d.id !== idTache))}
+  )
+}
   
 
   /**
@@ -49,7 +76,7 @@ export default function Taches({etatTaches, utilisateur}) {
       </form>
       <div className="listeTaches">
         {
-          taches.map(tache => <Tache key={tache.id} {... tache} />)
+          taches.map(tache => <Tache key={tache.id} {... tache} basculerTaches={basculerTaches} supprimerTache={supprimerTache} />)
         }
       </div>
     </section>
