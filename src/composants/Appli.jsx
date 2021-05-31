@@ -4,6 +4,7 @@ import './Appli.scss';
 import Controle from './Controle';
 import Taches from './Taches';
 import * as crudUtilisateurs from '../services/crud-utilisateurs';
+import * as crudTaches from '../services/crud-taches';
 import Accueil from './Accueil';
 import Utilisateur from './Utilisateur';
 
@@ -24,7 +25,7 @@ export default function Appli() {
           <Utilisateur utilisateur={utilisateur} />
         </header>
         <Taches etatTaches={etatTaches} utilisateur={utilisateur} />
-        <Controle etatTaches={etatTaches} utilisateur={utilisateur} />
+        <Controle etatTaches={etatTaches} utilisateur={utilisateur} supprimerCompletee={crudTaches.supprimerCompletee} mettreTout= {crudTaches.mettreTout} mettreCompletee= {crudTaches.mettreCompletee} mettreActives= {crudTaches.mettreActives} />
       </div>
     :
       <Accueil />
